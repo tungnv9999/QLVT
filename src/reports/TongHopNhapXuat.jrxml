@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42184028-1ebe-46fa-8600-0a41312093cf">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="FROM" class="java.util.Date"/>
+	<parameter name="TO" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[EXECUTE sp_ReportTongHopNhapXuat $P{FROM},$P{TO}]]>
+	</queryString>
+	<field name="NGAY" class="java.sql.Timestamp"/>
+	<field name="NHAP" class="java.lang.Double"/>
+	<field name="TILENHAP" class="java.lang.Double"/>
+	<field name="XUAT" class="java.lang.Double"/>
+	<field name="TILEXUAT" class="java.lang.Double"/>
+	<variable name="NHAP_SUM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{NHAP}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="XUAT_SUM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{XUAT}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="0" y="5" width="553" height="33" forecolor="#3300FF" uuid="43d2e579-bff0-4e1e-8f71-00657cd45a59"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[BẢNG TỔNG HỢP NHẬP XUẤT]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="38" width="553" height="26" forecolor="#0033FF" uuid="9d7b5454-fde8-45ae-bbcd-3a35d7dc70e3"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TỪ "+new java.text.SimpleDateFormat("dd/MM/YYYY").format($P{FROM})+" ĐẾN "+new java.text.SimpleDateFormat("dd/MM/YYYY").format($P{TO})]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="58be44ee-1f5f-4d7d-b535-316e979d657a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="111" height="15" forecolor="#0033FF" uuid="287982ae-1f7e-48a0-b66e-0ecc9ba1f6d6"/>
+				<text><![CDATA[NGÀY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="111" y="19" width="111" height="15" forecolor="#0033FF" uuid="06218bcf-fb9c-4527-8298-fec8f6116a21"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[NHẬP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="222" y="19" width="111" height="15" forecolor="#0033FF" uuid="fcb28172-ca1b-42b5-b37a-f3de723b15d3"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TỈ LỆ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="333" y="19" width="111" height="15" forecolor="#0033FF" uuid="283ecb06-4455-4fa4-b4ea-435f2b9acc0e"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[XUẤT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="444" y="19" width="111" height="15" forecolor="#0033FF" uuid="b16739ef-ec24-4fbf-9150-36b1aadbc29f"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TỈ LỆ XUẤT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="55ea0f60-6fad-4c99-9e10-ad5de4563bf7"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement style="Detail" x="0" y="0" width="111" height="15" uuid="bafb817a-0865-4565-938c-2bb8ee3a669c"/>
+				<textFieldExpression><![CDATA[$F{NGAY}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement style="Detail" x="111" y="0" width="111" height="15" uuid="824d6f69-ae33-4681-a804-209f1d6fa754"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{NHAP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="222" y="0" width="111" height="15" uuid="e6a2da45-1c7d-45bf-938c-028c59676e96"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{TILENHAP}*100))+" %"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="333" y="0" width="111" height="15" uuid="cba9550c-b2a8-4dd4-b41f-2720f1d971e5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{XUAT}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="444" y="0" width="111" height="15" uuid="5d7dce26-7d94-4642-be1c-0597d2269575"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{TILEXUAT}*100))+" %"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="dabbe00f-fc00-4b0f-a95b-e433b25264fd"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="4" width="111" height="15" forecolor="#0033FF" uuid="8bff0d8f-1f8c-4f94-b133-2d2920add633"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TỔNG]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement style="Detail" x="111" y="4" width="111" height="15" uuid="acd0008a-268b-4665-bb29-15fdd21507b5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{NHAP_SUM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="333" y="3" width="111" height="15" uuid="9cf41e36-9938-4a40-a8eb-e339765d0242"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{XUAT_SUM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="df3ac4ff-85db-4b52-a5f6-09a572d5262f"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="d79f482b-2bc1-425f-97a9-5aac6b3e8c78"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="7241f443-38f3-42a2-98ec-8e1bb2e6024e"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

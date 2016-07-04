@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PhatSinh" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a0df1ff4-921d-44dc-a138-a3da5ab367f4">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Serif" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Serif" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Serif" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Serif" fontSize="12"/>
+	<parameter name="FROM" class="java.util.Date"/>
+	<parameter name="TO" class="java.util.Date"/>
+	<parameter name="LOAI" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[EXECUTE  sp_ReportNhapXuat $P{FROM},$P{TO},$P{LOAI}]]>
+	</queryString>
+	<field name="THANG" class="java.lang.Integer"/>
+	<field name="NGAY" class="java.sql.Timestamp"/>
+	<field name="LOAI" class="java.lang.String"/>
+	<field name="PHIEU" class="java.lang.String"/>
+	<field name="TEN" class="java.lang.String"/>
+	<field name="TENVT" class="java.lang.String"/>
+	<field name="SOLUONG" class="java.lang.Integer"/>
+	<field name="DONGIA" class="java.lang.Double"/>
+	<field name="THANHTIEN" class="java.lang.Double"/>
+	<variable name="QUANTITY_SUM" class="java.lang.Integer" resetType="Group" resetGroup="NGAY" calculation="Sum">
+		<variableExpression><![CDATA[$F{SOLUONG}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="THANHTIEN_SUM" class="java.lang.Integer" resetType="Group" resetGroup="NGAY" calculation="Sum">
+		<variableExpression><![CDATA[$F{THANHTIEN}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="THANHTIEN_SUM_TOTAL" class="java.lang.Integer" incrementType="Group" incrementGroup="NGAY" calculation="Sum">
+		<variableExpression><![CDATA[$V{THANHTIEN_SUM}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="QUANTITY_SUM_TOTAL" class="java.lang.Integer" incrementType="Group" incrementGroup="NGAY" calculation="Sum">
+		<variableExpression><![CDATA[$V{QUANTITY_SUM}.intValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="FROM" class="java.util.Date">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.util.Date()]]></initialValueExpression>
+	</variable>
+	<variable name="TO" class="java.util.Date">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.util.Date()]]></initialValueExpression>
+	</variable>
+	<group name="NGAY">
+		<groupExpression><![CDATA[$F{THANG}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<textField pattern="MM/YYYY">
+					<reportElement style="SubTitle" x="3" y="16" width="97" height="24" forecolor="#006600" uuid="65d8b426-6af6-408a-b28c-d620faed9436"/>
+					<textElement>
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{NGAY}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="22">
+				<textField>
+					<reportElement style="Detail" x="357" y="0" width="65" height="19" uuid="f7d3a7ff-7861-48c2-a34b-95a0aeeda8bb"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{QUANTITY_SUM}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="257" y="0" width="100" height="19" uuid="b23078cc-331b-4f91-9c9d-1ad6c0af992d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[TỔNG]]></text>
+				</staticText>
+				<textField>
+					<reportElement style="Detail" x="487" y="1" width="64" height="18" uuid="9b773205-bd51-40d1-b72d-a2cd02c294c6"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{THANHTIEN_SUM}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<textField>
+				<reportElement x="162" y="46" width="271" height="20" forecolor="#0000FF" uuid="b4005669-2bce-4cab-9aca-9ba91b20c42b"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Từ : "+new java.text.SimpleDateFormat("dd/MM/YYYY").format($P{FROM})
++" - Đến: "+ new java.text.SimpleDateFormat("dd/MM/YYYY").format($P{TO})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="551" height="46" forecolor="#0000FF" uuid="2ae5198e-3514-4546-b882-d8705d53d08d"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BẢNG KÊ CHI TIẾT HÀNG HÓA - TRỊ GIÁ HÀNG "+($P{LOAI}.equals("N") ? "NHẬP" :"XUẤT" ) +" THEO THÁNG"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="4301dae7-ad57-4267-b063-fa7a02f46d8f"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="162" y="19" width="65" height="15" forecolor="#0000FF" uuid="c7c0e163-1198-49b1-99c8-8efff1ac81a1"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Phiếu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="227" y="20" width="65" height="15" forecolor="#0000FF" uuid="53fc5029-752e-4b6e-bc51-841e25e30f90"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Tên]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="292" y="19" width="65" height="15" forecolor="#0000FF" uuid="b08dd317-c485-44f9-ac1d-ee39fde1d236"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Vật tư]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="357" y="19" width="65" height="15" forecolor="#0000FF" uuid="c09129d8-8ef4-4b18-989c-972cddeb545c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Số lượng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="422" y="19" width="65" height="15" forecolor="#0000FF" uuid="a3aa1b7a-1aaf-4e81-b58b-0197314776d8"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Đơn giá]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="487" y="19" width="65" height="15" forecolor="#0000FF" uuid="57f052fd-fc5c-4acd-a78a-95d7cfec8616"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<text><![CDATA[Thành tiền]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="19" width="77" height="15" forecolor="#0000FF" uuid="583344fe-e70e-406e-a38d-9a3168c8e497"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ngày]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="af1b8fea-7b43-4359-9748-a00316a1886c"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="162" y="0" width="65" height="15" uuid="6317dd17-2acd-4986-add7-22b8d7d4fea6"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHIEU}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="227" y="0" width="65" height="15" uuid="ec3be663-bbba-4dd8-a0cf-53d54a6174a1"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TEN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="292" y="0" width="66" height="15" uuid="0dde12b8-1552-4615-829a-9aae6b63f90f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TENVT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="357" y="0" width="65" height="15" uuid="5f3adfec-cb8d-40b0-8213-8f58a00b374f"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOLUONG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="422" y="0" width="65" height="15" uuid="426e6201-ba78-4f8b-b5b2-a0d92967e31c"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DONGIA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="487" y="0" width="65" height="15" uuid="d8792671-b9ec-4a2f-98d5-975f293fddf0"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{THANHTIEN}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY">
+				<reportElement x="85" y="1" width="77" height="15" uuid="0d841e22-9e95-434e-b14a-9ef17117675b"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NGAY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="37" splitType="Immediate">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="d4a49a3a-2544-4deb-8092-4c6449647277"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="257" y="4" width="100" height="20" uuid="c19ad640-ccc6-4ead-bb83-1589f6ede9c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[TỔNG CỘNG]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="357" y="4" width="65" height="20" uuid="10d5c709-ea86-4110-8f3f-2d6b829adf2e"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{QUANTITY_SUM_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="487" y="4" width="64" height="20" uuid="1fbe7093-c1cd-4729-9643-d0c1240bf2cf"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{THANHTIEN_SUM_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="73b8b305-533e-424a-bd37-8ad970554c9d"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="16193c6a-30fb-446f-ab1c-cad03a8e868e"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="aa3dc06c-6206-45a5-a8b0-9d0e0e52a693"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
